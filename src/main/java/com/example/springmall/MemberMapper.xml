@@ -3,8 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.springmall.Mapper">
-  <select id="totalCount" resultType="int">
-    select count(*) from item
+<mapper namespace="com.example.springmall.MemberMapper">
+  <select id="selectCountMember" resultType="int">
+    select count(*) from member
   </select>
 </mapper>
