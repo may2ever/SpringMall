@@ -4,13 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.example.springmall.sample.mapper.SampleMapper">
-  <select id="selectSampleAll" resultType="com.example.springmall.sample.vo.Sample" parameterType="hashmap">
-  	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample limit #{currentPage},#{rowPerPage}
+  <select id="selectSampleOne" resultType="com.example.springmall.sample.vo.Sample" >
+  	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE sample_no = #{sampleNo}
+  </select>  
+  <select id="selectSampleAll" resultType="com.example.springmall.sample.vo.Sample" parameterType="int">
+  	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample ORDER BY sampleNo DESC limit #{currentPage},#{rowPerPage}
   </select>
   <select id="selectSampleCount" resultType="int">
   	SELECT count(*) FROM sample
   </select>
+  <update id="updateSample" parameterType="com.example.springmall.sample.vo.Sample">
+  	UPDATE sample SET sample_no = #{sampleNo}, sample_id = #{sampleId}, sample_pw = #{samplePw} WHERE sample_no = #{sampleNo}
+  </update>
   <delete id="deleteSample" parameterType="int">
   	DELETE FROM sample WHERE sample_no = #{sampleNo}
   </delete>
+  <insert id="insertSample" parameterType="com.example.springmall.sample.vo.Sample">
+  	INSERT INTO sample(sample_id, sample_pw) values(#{sampleId}, #{samplePw})
+  </insert>
 </mapper>

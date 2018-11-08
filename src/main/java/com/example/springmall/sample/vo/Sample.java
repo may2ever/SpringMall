@@ -12,7 +12,7 @@ public class Sample {
 		this.sampleId = sampleId;
 		this.samplePw = samplePw;
 	}
-
+	
 	public int getSampleNo() {
 		return sampleNo;
 	}
