@@ -40,14 +40,14 @@
 				<tr >
 					<td colspan = "5" align="center">
 						<ul class="pagination">
-							<c:if test="${pageInfo.currentBlock > 1}">
-								<li class="page-item"><a href="/sample/sampleList?currentPage=${(pageInfo.currentBlock - 1) * pageInfo.pagePerBlock}"><</a></li>
+							<c:if test="${pagingInfo.currentScreen > 1}">
+								<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}"><</a></li>
 							</c:if>
-							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}" step="1">
+							<c:forEach var="i" begin="${pagingInfo.startScreenPage}" end="${pagingInfo.startScreenPage + pagingInfo.currentScreenPage - 1}" step="1">
 								<li class="page-item" id = "pageItem${i}"><a href="/sample/sampleList?currentPage=${i}">${i}</a></li>
 							</c:forEach>
-							<c:if test="${pageInfo.currentBlock <  pageInfo.lastBlock}">
-								<li class="page-item"><a href="/sample/sampleList?currentPage=${pageInfo.currentBlock * pageInfo.pagePerBlock + 1}">></a></li>
+							<c:if test="${pagingInfo.currentScreen <  pagingInfo.lastScreen}">
+								<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}">></a></li>
 							</c:if>
 						</ul>
 					</td>
@@ -55,10 +55,10 @@
 			</tbody>
 		</table>
 	</div>
-	<script>
-		$(document).ready(()=>{
-			$('#pageItem'+${pageInfo.currentPage}).addClass('active');
-		});
-	</script>
+<script>
+	$(document).ready(()=>{
+		$('#pageItem'+${pagingInfo.currentPage}).addClass('active');
+	});
+</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.example.springmall.sample.controller;
 
+import java.util.List;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.example.springmall.sample.service.SampleService;
 import com.example.springmall.sample.vo.Sample;
 
@@ -18,9 +20,10 @@ public class SampleController {
 	// 1. 샘플목록
 	@RequestMapping(value="/sample/sampleList", method=RequestMethod.GET)
 	public String sampleList(@RequestParam(value="currentPage", defaultValue = "1") int currentPage, Model model) { //Model model = new Model();
-		HashMap<String, Integer> pageInfo = new HashMap<String, Integer>();
-
-
+		HashMap<String, Integer> pagingInfo = new HashMap<String, Integer>();
+		List<Sample> sampleList = sampleService.getSelectSampleAll(pagingInfo, currentPage, 10, 10);
+		model.addAttribute("sampleList", sampleList);
+		model.addAttribute("pagingInfo", pagingInfo);
 		return "/sample/sampleList";
 	}
 	// 2. 삭제
