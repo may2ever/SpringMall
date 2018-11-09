@@ -16,7 +16,7 @@
 		<div align="left">
 			<a href="/sample/addSample"><button class = "btn btn-primary" >샘플 추가</button></a>
 		</div>
-		<table class="table table-hover">
+		<table class="table table-hover" style="margin: 0 auto">
 			<thead>
 				<tr>
 					<th>SAMPLE NO</th>
@@ -37,27 +37,60 @@
 						<td><a href="/sample/modifySample?sampleNo=${sample.sampleNo}">UPDATE</a></td>
 					</tr>	
 				</c:forEach>
-				<tr >
-					<td colspan = "5" align="center">
-						<ul class="pagination">
+				<tr>
+					<td colspan = "5" align="center" style=": 10px">
+						<ul class="pagination" style="margin: 0 auto">
 							<c:if test="${pagingInfo.currentScreen > 1}">
-								<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}"><</a></li>
+								<c:if test="${searchQuery != ''}">
+									<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}&searchQuery=${searchQuery}&searchType=${searchType}"><</a></li>
+								</c:if>
+								<c:if test="${searchQuery == ''}">
+									<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}"><</a></li>
+								</c:if>	
 							</c:if>
 							<c:forEach var="i" begin="${pagingInfo.startScreenPage}" end="${pagingInfo.startScreenPage + pagingInfo.currentScreenPage - 1}" step="1">
-								<li class="page-item" id = "pageItem${i}"><a href="/sample/sampleList?currentPage=${i}">${i}</a></li>
+								<c:if test="${searchQuery == ''}">
+									<li class="page-item" id = "pageItem${i}"><a href="/sample/sampleList?currentPage=${i}">${i}</a></li>
+								</c:if>
+								<c:if test="${searchQuery != ''}">
+								<li class="page-item" id = "pageItem${i}"><a href="/sample/sampleList?currentPage=${i}&searchQuery=${searchQuery}&searchType=${searchType}">${i}</a></li>
+								</c:if>	
 							</c:forEach>
 							<c:if test="${pagingInfo.currentScreen <  pagingInfo.lastScreen}">
-								<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}">></a></li>
+								<c:if test="${searchQuery != ''}">
+									<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}&searchQuery=${searchQuery}&searchType=${searchType}">></a></li>
+								</c:if>
+								<c:if test="${searchQuery == ''}">
+									<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}">></a></li>
+								</c:if>
 							</c:if>
 						</ul>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		<div>
+			<form action = "/sample/sampleList" method = "post" id = "searchForm">
+				<select name = "searchType" id ="searchType">
+					<option value="sample_no">SAMPLENO</option>
+					<option value="sample_id">SAMPLEID</option>
+					<option value="sample_pw">SAMPLEPW</option>
+				</select>
+				<input type="text" name="searchQuery" value="${searchQuery}">
+				<input type="submit" value="검색">
+			</form>
+		</div>
 	</div>
 <script>
 	$(document).ready(()=>{
 		$('#pageItem'+${pagingInfo.currentPage}).addClass('active');
+		if('${searchType}' == ''){
+			$('#searchType').val('sample_no');
+		}
+		else {
+			$('#searchType').val('${searchType}');
+		}
+		
 	});
 </script>
 </body>

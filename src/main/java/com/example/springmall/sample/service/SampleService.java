@@ -22,14 +22,25 @@ public class SampleService {
 	 * @param pagePerScreen 한 화면에 보여지는 페이지의 개수(10 페이지씩 보여질때 1~10 페이지를 첫번째화면 11~20 두번째 화면라고 본다)
 	 * @return 샘플의 리스트
 	 */
-	public List<Sample> getSelectSampleAll(HashMap<String, Integer> pagingInfo, int currentPage, int rowPerPage, int pagePerScreen) {
+	public List<Sample> getSelectSample(HashMap<String, Object> pagingInfo, int currentPage, int rowPerPage, int pagePerScreen) {
 	int totalCount; //리스트의 총 개수
 	int currentScreen; //현재 화면 번호
 	int lastScreen; //마지막 화면 번호
 	int currentScreenPage; //현재 화면에 보이는 페이지의 개수
 	int startScreenPage; //현재 화면에 보이는 페이지의 시작 번호
 	int lastPage; //마지막 페이지번호
+	List<Sample> sampleList;
 	totalCount = sampleMapper.selectSampleCount();
+	if(pagingInfo.get("searchQuery") == null) {
+		totalCount = sampleMapper.selectSampleCount();
+		sampleList = sampleMapper.selectSampleAll((currentPage - 1) * rowPerPage, rowPerPage);
+	}
+	else {
+		String searchQuery = (String)pagingInfo.get("searchQuery");
+		String searchType = (String)pagingInfo.get("searchType");
+		totalCount = sampleMapper.selectSearchCount(searchQuery, searchType);
+		sampleList = sampleMapper.selectSearchSample((currentPage - 1) * rowPerPage, rowPerPage, searchQuery, searchType);
+	}
 	lastPage = (int)Math.ceil((double)totalCount / rowPerPage);
 	currentScreen = (int)Math.ceil((double)currentPage / pagePerScreen); // 1~10 1번째 화면, 11~20 2번째 화면 
 	lastScreen = (int) Math.ceil((double)totalCount / (rowPerPage * pagePerScreen));// 한 페이지당 보여지는 리스트의 개수 10 * 한 화면에 보여지는 페이지의 개수 10 이면 총 100개가 하나의 화면에서 보여진다  리스트의 총개수를 100으로 나누어서 나누어 떨어지지 않으면 하나의 화면이 더 있다
@@ -53,7 +64,7 @@ public class SampleService {
 	pagingInfo.put("pagePerScreen", pagePerScreen);
 	pagingInfo.put("currentScreenPage", currentScreenPage);
 	pagingInfo.put("startScreenPage", startScreenPage);
-	return sampleMapper.selectSampleAll((currentPage - 1) * rowPerPage, rowPerPage);
+	return sampleList;
 	}
 	/**
 	 * 선택한 샘플데이터 번호를 통해 샘플을 삭제
@@ -86,5 +97,9 @@ public class SampleService {
 	 */
 	public int modifySample(Sample sample) {
 		return sampleMapper.updateSample(sample);
+	}
+	public static boolean isNumeric(String str)
+	{
+	  return str.matches("-?\\d+(\\.\\d+)?");
 	}
 }

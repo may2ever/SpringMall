@@ -10,6 +10,7 @@ import com.example.springmall.sample.vo.Sample;
 public interface SampleMapper {
 	//1. select all
 	List<Sample> selectSampleAll(int currentPage, int rowPerPage);
+	 //select all count
 	int selectSampleCount();
 	//2. delete
 	int deleteSample(int sampleNo);
@@ -19,4 +20,8 @@ public interface SampleMapper {
 	int updateSample(Sample sample);
 	//5, select one
 	Sample selectSampleOne(int sampleNo);
+	//6. select search
+	List<Sample> selectSearchSample(int currentPage, int rowPerPage, String searchQuery, String searchType);
+	//6. select search count
+	int selectSearchCount(String searchQuery, String searchType);
 }

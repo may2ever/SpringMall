@@ -17,11 +17,18 @@ import com.example.springmall.sample.vo.Sample;
 public class SampleController {
 	@Autowired
 	private SampleService sampleService;
-	// 1. 샘플목록
-	@RequestMapping(value="/sample/sampleList", method=RequestMethod.GET)
-	public String sampleList(@RequestParam(value="currentPage", defaultValue = "1") int currentPage, Model model) { //Model model = new Model();
-		HashMap<String, Integer> pagingInfo = new HashMap<String, Integer>();
-		List<Sample> sampleList = sampleService.getSelectSampleAll(pagingInfo, currentPage, 10, 10);
+	// 1. 샘플전체목록 + 검색
+	@RequestMapping(value="/sample/sampleList", method = {RequestMethod.GET, RequestMethod.POST})
+	public String sampleList(@RequestParam(value="currentPage", defaultValue = "1") int currentPage, Model model, @RequestParam(value="searchQuery", defaultValue = "")String searchQuery, @RequestParam(value="searchType", defaultValue = "")String searchType) { //Model model = new Model();
+		HashMap<String, Object> pagingInfo = new HashMap<String, Object>();
+		List<Sample> sampleList;
+		if(!searchQuery.equals("")) {
+			pagingInfo.put("searchQuery", searchQuery);			
+			pagingInfo.put("searchType", searchType);
+		}
+		sampleList = sampleService.getSelectSample(pagingInfo, currentPage, 10, 10);
+		model.addAttribute("searchQuery", searchQuery);
+		model.addAttribute("searchType", searchType);
 		model.addAttribute("sampleList", sampleList);
 		model.addAttribute("pagingInfo", pagingInfo);
 		return "/sample/sampleList";
