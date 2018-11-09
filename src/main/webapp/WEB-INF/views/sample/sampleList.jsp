@@ -41,28 +41,13 @@
 					<td colspan = "5" align="center" style=": 10px">
 						<ul class="pagination" style="margin: 0 auto">
 							<c:if test="${pagingInfo.currentScreen > 1}">
-								<c:if test="${searchQuery != ''}">
-									<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}&searchQuery=${searchQuery}&searchType=${searchType}"><</a></li>
-								</c:if>
-								<c:if test="${searchQuery == ''}">
-									<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}"><</a></li>
-								</c:if>	
+								<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}&searchQuery=${searchQuery}&searchType=${searchType}"><</a></li>
 							</c:if>
 							<c:forEach var="i" begin="${pagingInfo.startScreenPage}" end="${pagingInfo.startScreenPage + pagingInfo.currentScreenPage - 1}" step="1">
-								<c:if test="${searchQuery == ''}">
-									<li class="page-item" id = "pageItem${i}"><a href="/sample/sampleList?currentPage=${i}">${i}</a></li>
-								</c:if>
-								<c:if test="${searchQuery != ''}">
 								<li class="page-item" id = "pageItem${i}"><a href="/sample/sampleList?currentPage=${i}&searchQuery=${searchQuery}&searchType=${searchType}">${i}</a></li>
-								</c:if>	
 							</c:forEach>
 							<c:if test="${pagingInfo.currentScreen <  pagingInfo.lastScreen}">
-								<c:if test="${searchQuery != ''}">
-									<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}&searchQuery=${searchQuery}&searchType=${searchType}">></a></li>
-								</c:if>
-								<c:if test="${searchQuery == ''}">
-									<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}">></a></li>
-								</c:if>
+								<li class="page-item"><a href="/sample/sampleList?currentPage=${pagingInfo.currentScreen * pagingInfo.pagePerScreen + 1}&searchQuery=${searchQuery}&searchType=${searchType}">></a></li>
 							</c:if>
 						</ul>
 					</td>
@@ -70,14 +55,18 @@
 			</tbody>
 		</table>
 		<div>
-			<form action = "/sample/sampleList" method = "post" id = "searchForm">
-				<select name = "searchType" id ="searchType">
+			<form action = "/sample/sampleList" method = "post" id = "searchForm" class="form-inline">
+				<select name = "searchType" id ="searchType" class="form-control input-sm">
 					<option value="sample_no">SAMPLENO</option>
 					<option value="sample_id">SAMPLEID</option>
 					<option value="sample_pw">SAMPLEPW</option>
 				</select>
-				<input type="text" name="searchQuery" value="${searchQuery}">
-				<input type="submit" value="검색">
+				<div class="input-group">
+					<input type="text" name="searchQuery" value="${searchQuery}" class="form-control input-sm">
+					<div class="input-group-btn">
+					<button type="submit" class="btn btn-default input-sm"><i class="glyphicon glyphicon-search"></i></button>
+				</div>
+				</div>
 			</form>
 		</div>
 	</div>
