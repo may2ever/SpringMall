@@ -41,12 +41,13 @@ public class SampleService {
 		totalCount = sampleMapper.selectSearchCount(searchQuery, searchType);
 		sampleList = sampleMapper.selectSearchSample((currentPage - 1) * rowPerPage, rowPerPage, searchQuery, searchType);
 		for(Sample sample:sampleList) {
-			int startIndex = sample.getSamplePw().toLowerCase().indexOf(searchQuery.toLowerCase());
 			if(searchType.equals("sample_id")) {
+				int startIndex = sample.getSampleId().toLowerCase().indexOf(searchQuery.toLowerCase());
 				String query = sample.getSampleId().substring(startIndex,startIndex + searchQuery.length());
 				sample.setSampleId(sample.getSampleId().replaceAll(query, "<b>"+query+"</b>"));
 			}
 			else if(searchType.equals("sample_pw")) {
+				int startIndex = sample.getSamplePw().toLowerCase().indexOf(searchQuery.toLowerCase());
 				String query = sample.getSamplePw().substring(startIndex,startIndex + searchQuery.length());
 				sample.setSamplePw(sample.getSamplePw().replaceAll(query, "<b>"+query+"</b>"));
 			}
