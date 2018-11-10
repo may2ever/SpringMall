@@ -62,7 +62,7 @@
 					<option value="sample_pw">SAMPLEPW</option>
 				</select>
 				<div class="input-group">
-					<input type="text" name="searchQuery" value="${searchQuery}" class="form-control input-sm">
+					<input type="text" name="searchQuery" value="${searchQuery}" class="form-control input-sm" style="width: 200px">
 					<div class="input-group-btn">
 					<button type="submit" class="btn btn-default input-sm"><i class="glyphicon glyphicon-search"></i></button>
 				</div>

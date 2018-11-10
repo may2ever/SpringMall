@@ -40,6 +40,17 @@ public class SampleService {
 		String searchType = (String)pagingInfo.get("searchType");
 		totalCount = sampleMapper.selectSearchCount(searchQuery, searchType);
 		sampleList = sampleMapper.selectSearchSample((currentPage - 1) * rowPerPage, rowPerPage, searchQuery, searchType);
+		for(Sample sample:sampleList) {
+			int startIndex = sample.getSamplePw().toLowerCase().indexOf(searchQuery.toLowerCase());
+			if(searchType.equals("sample_id")) {
+				String query = sample.getSampleId().substring(startIndex,startIndex + searchQuery.length());
+				sample.setSampleId(sample.getSampleId().replaceAll(query, "<b>"+query+"</b>"));
+			}
+			else if(searchType.equals("sample_pw")) {
+				String query = sample.getSamplePw().substring(startIndex,startIndex + searchQuery.length());
+				sample.setSamplePw(sample.getSamplePw().replaceAll(query, "<b>"+query+"</b>"));
+			}
+		}
 	}
 	lastPage = (int)Math.ceil((double)totalCount / rowPerPage);
 	currentScreen = (int)Math.ceil((double)currentPage / pagePerScreen); // 1~10 1번째 화면, 11~20 2번째 화면 
@@ -97,9 +108,5 @@ public class SampleService {
 	 */
 	public int modifySample(Sample sample) {
 		return sampleMapper.updateSample(sample);
-	}
-	public static boolean isNumeric(String str)
-	{
-	  return str.matches("-?\\d+(\\.\\d+)?");
 	}
 }

@@ -8,21 +8,23 @@
   	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE sample_no = #{sampleNo}
   </select>
    <select id="selectSearchSample" resultType="com.example.springmall.sample.vo.Sample" >
-   	<if test="!@com.example.springmall.sample.service.SampleService@isNumeric(searchQuery)">
-   		SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE ${searchType} LIKE CONCAT('%',#{searchQuery},'%') ORDER BY sampleNo DESC limit #{currentPage},#{rowPerPage}
+   	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE 
+   	<if test="!(searchType == 'sample_no')">
+   		${searchType} LIKE CONCAT('%',#{searchQuery},'%')
    	</if>
-  	<if test="@com.example.springmall.sample.service.SampleService@isNumeric(searchQuery)">
-   		SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE ${searchType} = #{searchQuery} ORDER BY sampleNo DESC limit #{currentPage},#{rowPerPage}
+  	<if test="searchType == 'sample_no'">
+   		${searchType} = #{searchQuery} 
    	</if>
+   	ORDER BY sampleNo DESC limit #{currentPage}, #{rowPerPage}
   </select> 
   <select id="selectSampleAll" resultType="com.example.springmall.sample.vo.Sample">
   	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample ORDER BY sampleNo DESC limit #{currentPage},#{rowPerPage}
   </select>
     <select id="selectSearchCount" resultType="int">
-    <if test="!@com.example.springmall.sample.service.SampleService@isNumeric(searchQuery)">
+    <if test="!(searchType == 'sample_no')">
   		SELECT count(*) FROM sample WHERE ${searchType} LIKE CONCAT('%',#{searchQuery},'%')
   	</if>
-  	<if test="@com.example.springmall.sample.service.SampleService@isNumeric(searchQuery)">
+  	<if test="searchType == 'sample_no'">
   	 	SELECT count(*) FROM sample WHERE ${searchType} = #{searchQuery}
   	</if>
   </select>

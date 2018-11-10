@@ -23,6 +23,7 @@ public class SampleController {
 		HashMap<String, Object> pagingInfo = new HashMap<String, Object>();
 		List<Sample> sampleList;
 		if(!searchQuery.equals("")) {
+			
 			pagingInfo.put("searchQuery", searchQuery);			
 			pagingInfo.put("searchType", searchType);
 		}
