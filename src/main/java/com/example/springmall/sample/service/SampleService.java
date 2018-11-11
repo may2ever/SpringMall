@@ -30,7 +30,6 @@ public class SampleService {
 	int startScreenPage; //현재 화면에 보이는 페이지의 시작 번호
 	int lastPage; //마지막 페이지번호
 	List<Sample> sampleList;
-	totalCount = sampleMapper.selectSampleCount();
 	if(pagingInfo.get("searchQuery") == null) {
 		totalCount = sampleMapper.selectSampleCount();
 		sampleList = sampleMapper.selectSampleAll((currentPage - 1) * rowPerPage, rowPerPage);
