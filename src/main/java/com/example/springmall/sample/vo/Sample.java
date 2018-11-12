@@ -4,6 +4,15 @@ public class Sample {
 	private int sampleNo;
 	private String sampleId;
 	private String samplePw;
+	private SampleFile sampleFile;
+	public SampleFile getSampleFile() {
+		return sampleFile;
+	}
+
+	public void setSampleFile(SampleFile sampleFile) {
+		this.sampleFile = sampleFile;
+	}
+
 	public Sample() {
 	}
 	

@@ -1,18 +1,31 @@
 package com.example.springmall.sample.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.springmall.sample.mapper.SampleFileMapper;
 import com.example.springmall.sample.mapper.SampleMapper;
 import com.example.springmall.sample.vo.Sample;
+import com.example.springmall.sample.vo.SampleFile;
+import com.example.springmall.sample.vo.SampleRequest;
 
 @Service
+@Transactional
 public class SampleService {
 	@Autowired
 	private SampleMapper sampleMapper;
+	@Autowired
+	private SampleFileMapper sampleFileMapper;
 	/**
 	 * 현재 페이지와 페이지당 리스트수를 통해 데이터베이스에서 샘플을 가져오고 페이징을 위한 정보를 세팅
 	 * 
@@ -90,8 +103,53 @@ public class SampleService {
 	 *
 	 * @param sample 입력된 샘플에 대한 정보
 	 */
-	public int addSample(Sample sample) {
-		return sampleMapper.insertSample(sample);
+	public int addSample(SampleRequest sampleRequest, String realPath) {
+		/*
+		 * sampleRequest --> samPle, sampleFIle로 변환 필요
+		 * 1. multipartfile 파일데이터 -> 저장
+		 * 2. multipartfile 정보-> 새로운정보 추가 ->sampleFile
+		 * 3. 
+		 */
+		//1.
+		Sample sample = new Sample();
+		sample.setSampleId(sampleRequest.getSampleId());
+		sample.setSamplePw(sampleRequest.getSamplePw());
+		sampleMapper.insertSample(sample); // ai -> sampleNo 트랜잭션 2
+		//2
+		SampleFile sampleFile = new SampleFile();
+		MultipartFile multipartFile = sampleRequest.getMultipartFile();
+		// 1. sampleFileNo : AutoIntrement
+		if(multipartFile.getSize() != 0) {
+			// 2. SampleNo
+			sampleFile.setSampleNo(sample.getSampleNo()); //insertSample(sample) 후에 pk값이 sample변수에 채워진다.
+			// 3. sampleFilePath
+			sampleFile.setSampleFilePath(realPath);
+			String originalFileName = multipartFile.getOriginalFilename();
+			int index = originalFileName.indexOf(".");
+			// 4. 이름
+			String realfileName = originalFileName.substring(0,index);
+			sampleFile.setSampleFileName(realfileName);
+			// 5. 확장자
+			String ext = originalFileName.substring(realfileName.length()+1, originalFileName.length());
+			sampleFile.setSampleFileExt(ext);
+			// 6. 타입
+			sampleFile.setSampleFileType(multipartFile.getContentType());
+			// 7. 크기
+			sampleFile.setSampleFileSize(multipartFile.getSize());
+			/*String fileName = UUID.randomUUID().toString();*/
+			//내가 원하는 이름의 빈파일 생성
+			File file = new File(realPath + "/" + realfileName + "." + ext);
+			sampleFileMapper.insertSampleFile(sampleFile); //트랜잭션 2
+			//multipartFile파일을 빈파일로 복사
+			try {
+				multipartFile.transferTo(file);
+			}
+			catch(IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+		// 1 + 2 -> @Transactional
+		return 0;
 	}
 	/**
 	 * 샘플에 대한 정보하나를 가져온다

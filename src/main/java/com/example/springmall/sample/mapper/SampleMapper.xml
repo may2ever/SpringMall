@@ -2,9 +2,26 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="com.example.springmall.sample.mapper.SampleMapper">
-  <select id="selectSampleOne" resultType="com.example.springmall.sample.vo.Sample" >
+
+  <resultMap type="com.example.springmall.sample.vo.Sample" id="sampleResultMap">
+  	<id column="sample_no" property="sampleNo"/>
+  	<result column="sample_id" property="sampleId"/>
+  	<result column="sample_pw" property="samplePw"/>
+  	<association property="sampleFile" javaType="com.example.springmall.sample.vo.SampleFile">
+  		<id column="samplefile_no" property="sampleFileNo"/>
+  		<result column="sample_no" property="sampleNo"/>
+  		<result column="samplefile_path" property="sampleFilePath"/>
+  		<result column="samplefile_name" property="sampleFileName"/>
+  		<result column="samplefile_ext" property="sampleFileExt"/>
+  		<result column="samplefile_type" property="sampleFileType"/>
+  		<result column="samplefile_size" property="sampleFileSize"/>
+  		<result column="samplefile_date" property="sampleFileDate"/>
+  	</association>
+  </resultMap>
+
+  <select id="selectSampleOne" resultMap="sampleResultMap"  >
   	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE sample_no = #{sampleNo}
   </select>
    <select id="selectSearchSample" resultType="com.example.springmall.sample.vo.Sample" >
@@ -37,7 +54,7 @@
   <delete id="deleteSample" parameterType="int">
   	DELETE FROM sample WHERE sample_no = #{sampleNo}
   </delete>
-  <insert id="insertSample" parameterType="com.example.springmall.sample.vo.Sample">
+  <insert id="insertSample" useGeneratedKeys = "true" keyProperty="sampleNo" parameterType="com.example.springmall.sample.vo.Sample">
   	INSERT INTO sample(sample_id, sample_pw) values(#{sampleId}, #{samplePw})
   </insert>
 </mapper>

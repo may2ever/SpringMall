@@ -1,7 +1,11 @@
 package com.example.springmall.sample.controller;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springmall.sample.service.SampleService;
 import com.example.springmall.sample.vo.Sample;
+import com.example.springmall.sample.vo.SampleRequest;
 
 @Controller
 public class SampleController {
@@ -49,9 +54,11 @@ public class SampleController {
 	}
 	// 3-2. 입력 액션
 	@RequestMapping(value = "/sample/addSample", method = RequestMethod.POST)
-	public String addSample(Sample sample /*커맨드 객체*/) {
+	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session,HttpServletRequest req) {
 		// 커맨드 객체의 멤버 변수 == input태그 name속성 ->표준 setter존재해야된다
-		int row = sampleService.addSample(sample);
+		String getRealPath =  session.getServletContext().getRealPath("/uploads");
+		System.out.println("sampleRequest.multipartfile : " + sampleRequest.getMultipartFile());
+		int row = sampleService.addSample(sampleRequest, getRealPath);
 		if(row != 0) {
 			System.out.println("sample 등록 성공!");
 		}
@@ -70,5 +77,9 @@ public class SampleController {
 	public String modifySample(Sample sample) {
 		sampleService.modifySample(sample);
 		return "redirect:/sample/sampleList";
+	}
+	@RequestMapping(value="/common/downloadFile.do")
+	public void downloadFile(HttpServletResponse response) {
+		
 	}
 }

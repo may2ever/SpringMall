@@ -41,7 +41,7 @@ $(document).ready(()=>{
 <body>
 	<div class="container" align="center" style="max-width: 50%">
 		<h1>Add Sample</h1>
-		<form action="/sample/addSample" method="post" id = "addForm">
+		<form action="/sample/addSample" method="post" id = "addForm" enctype="multipart/form-data">
 			<table class="table " >
 				<tr>
 					<td style="text-align: center;width: 130px"><h4>아이디</h4></td>
@@ -55,6 +55,11 @@ $(document).ready(()=>{
 					<td>
 						<input type="password" class = "form-control" name = "samplePw" id = "samplePw">
 						<span id="samplePwtext"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan = "2" align="center">
+						<input type="file" name ="multipartFile">
 					</td>
 				</tr>
 				<tr>
