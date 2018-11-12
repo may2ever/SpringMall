@@ -19,9 +19,8 @@
   		<result column="samplefile_date" property="sampleFileDate"/>
   	</association>
   </resultMap>
-
   <select id="selectSampleOne" resultMap="sampleResultMap">
-  	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE sample_no = #{sampleNo}
+  	SELECT sample_no, sample_id, sample_pw From sample WHERE sample_no = #{sampleNo}
   </select>
    <select id="selectSearchSample" resultMap="sampleResultMap" >
    	 	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_path, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
