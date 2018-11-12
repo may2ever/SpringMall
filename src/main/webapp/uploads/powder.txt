@@ -1,0 +1,85 @@
+Kamsahamnida!
+
+Thank you very much for your donation!
+
+As promised, I can now reveal to you the secret codes to unlock
+POWDER's special modes.  Remember that great power comes with
+great responsibility: keep these potent runes hidden from prying
+eyes!
+
+To enter the code, type in the code (or tap, in the case of the DS)
+the codeword as your character name.  They are all lower case.
+
+Code Word: bathtub
+This unlocks wizard mode.  The Wish command brings up a menu of
+choices to grant items, teleport levels, create monsters, etc.
+Perfect for exploration of the stranger aspects of POWDER.  Note that
+these characters aren't eligible for high scores.
+
+Code Word: modulus
+This unlocks stress test mode.  POWDER will start playing itself,
+creating random characters on random levels and seeing what happens.
+I use this to debug - I figure things are stable if it lasts a few
+million turns without crashing.  But I find watching it entertaining
+and hope you do too!
+
+If you have any questions about the code words, or difficulties
+getting them to work, please feel free to e-mail me.  The same is true
+for POWDER in general, of course.
+
+Thank you again for your support of POWDER development.  I have added
+your name to my list of donaters.  If there are any new things added
+to the donation program (new code words, or change of code words), I
+will let you know.  Unless, of course, you request not to hear from me
+again.
+
+Sincerely,
+Jeff Lait
+slow&quick = nomal
+fast&slow = nomal
+
+nomal vs slow - move move free
+fast&quick vs slow - free free move free move
+fast&quick vs nomal - move move free move free
+fast&quick vs fast - move move move move free
+fast&quick vs fast&slow - move move free free
+quick vs nomal - move move move free
+quick vs slow - move move free free
+quick vs fast - move move free move(동일턴에 적 free) 
+fast vs quick - move free move move(동일턴에 적 free)
+fast vs nomal - move move move free (3턴째 프리턴)
+fast vs slow - move free
+fast&slow vs slow - move move free
+fast&slow vs fast - move move move free
+fast&slow vs nomal - move free move(적free)
+
+적maxhp < 적현재hp "in superior condition"
+적maxhp = 적현재hp "in perfect shape"
+적maxhp의 60~99 < 적현재hp "in good shape"
+적maxhp의 30~59 < 적현재hp "in poor shape"
+적maxhp의 2~29% < 적현재hp "near death"
+적현재hp = 1 "at death's gate"
+
+위험도 순서(낮은순)
+"a windshield kill"
+"an easy fight"
+"an even fight"
+"a hard fight"
+"an impossible fight"
+"your funeral"
+
+아머스킬 분류
+CLOTH = CLOTH,PAPER
+LEATHER = wood,LEATHER
+IRON = iron
+EXOTIC = gold,glass,mithril,silver,stone,flesh
+
+공격자
+1~20 다이스,경험레벨 1~X ,인챈트(0~8),무기보너스[+ ], 스킬레벨(0~3)
+
+
+저주
+힐
+리치폼
+중독치료
+인첸트

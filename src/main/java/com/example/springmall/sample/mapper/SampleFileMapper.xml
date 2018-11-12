@@ -5,6 +5,18 @@
   
 <mapper namespace="com.example.springmall.sample.mapper.SampleFileMapper">
 	<insert id="insertSampleFile" parameterType="com.example.springmall.sample.vo.SampleFile">
-			INSERT INTO samplefile(sample_no, samplefile_path, samplefile_name, samplefile_ext, samplefile_type, samplefile_size, samplefile_date) values(#{sampleNo} ,#{sampleFilePath}, #{sampleFileName},  #{sampleFileExt},  #{sampleFileType},  #{sampleFileSize}, NOW())
+		INSERT INTO samplefile(sample_no, samplefile_path, samplefile_name, samplefile_ext, samplefile_type, samplefile_size, samplefile_date) values(#{sampleNo} ,#{sampleFilePath}, #{sampleFileName},  #{sampleFileExt},  #{sampleFileType},  #{sampleFileSize}, NOW())
 	</insert>
+	<resultMap type="com.example.springmall.sample.vo.SampleFile" id="sampleFileResultMap">
+  		<id column="samplefile_no" property="sampleFileNo"/>
+  		<result column="samplefile_path" property="sampleFilePath"/>
+  		<result column="samplefile_name" property="sampleFileName"/>
+  		<result column="samplefile_ext" property="sampleFileExt"/>
+  		<result column="samplefile_type" property="sampleFileType"/>
+  		<result column="samplefile_size" property="sampleFileSize"/>
+  		<result column="samplefile_date" property="sampleFileDate"/>
+	</resultMap>
+	<select id="selectSampleFileOne" resultMap="sampleFileResultMap" >
+		SELECT * from samplefile where samplefile_no = #{sampleFileNo}
+	</select>
 </mapper>

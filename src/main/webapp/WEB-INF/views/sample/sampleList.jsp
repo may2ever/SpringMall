@@ -16,29 +16,35 @@
 		<div align="left">
 			<a href="/sample/addSample"><button class = "btn btn-primary" >샘플 추가</button></a>
 		</div>
-		<table class="table table-hover" style="margin: 0 auto">
+		<table class="table table-hover" style="margin: 0 auto; text-align: center;" >
 			<thead>
 				<tr>
-					<th>SAMPLE NO</th>
-					<th>SAMPLE ID</th>
-					<th>SAMPLE PW</th>
-					<th>DELETE</th>
-					<th>UPDATE</th>
+					<th style="width: 100px;text-align: center;">SAMPLE NO</th>
+					<th style="text-align: center;">SAMPLE ID</th>
+					<th style="text-align: center;">SAMPLE PW</th>
+					<th style="width: 100px; text-align: center;">DELETE</th>
+					<th style="width: 100px;text-align: center;">UPDATE</th>
+					<th style="text-align: center;">download</th>
 				</tr>
 			</thead>
 			<tbody>
 				<!--model안의 sampleList 가져와서 사용  -->
 				<c:forEach var="sample" items="${sampleList}">
+				<c:set var="sampleFile" value="${sample.sampleFile}"></c:set>
 					<tr>
-						<td>${sample.sampleNo}</td>
-						<td>${sample.sampleId}</td>
-						<td>${sample.samplePw}</td>
-						<td><a href="/sample/removeSample?sampleNo=${sample.sampleNo}&currentPage=${pagingInfo.currentPage}">DELETE</a></td>
-						<td><a href="/sample/modifySample?sampleNo=${sample.sampleNo}">UPDATE</a></td>
+						<td style="vertical-align: middle;">${sample.sampleNo}</td>
+						<td style="vertical-align: middle;">${sample.sampleId}</td>
+						<td style="vertical-align: middle;">${sample.samplePw}</td>
+						<td style="vertical-align: middle;"><a href="/sample/removeSample?sampleNo=${sample.sampleNo}&currentPage=${pagingInfo.currentPage}">DELETE</a></td>
+						<td style="vertical-align: middle;"><a href="/sample/modifySample?sampleNo=${sample.sampleNo}">UPDATE</a></td>
+						<td>
+							<a href="/sample/downloadFile?sampleFileNo=${sampleFile.sampleFileNo}">${sampleFile.sampleFileName}.${sampleFile.sampleFileExt}</a><br>
+							<span>${sampleFile.sampleFileSize} B</span>
+						</td>
 					</tr>	
 				</c:forEach>
 				<tr>
-					<td colspan = "5" align="center" style=": 10px">
+					<td colspan = "6" align="center" style=": 10px">
 						<ul class="pagination" style="margin: 0 auto">
 							<c:if test="${pagingInfo.currentScreen > 1}">
 								<li class="page-item"><a href="/sample/sampleList?currentPage=${(pagingInfo.currentScreen - 1) * pagingInfo.pagePerScreen}&searchQuery=${searchQuery}&searchType=${searchType}"><</a></li>

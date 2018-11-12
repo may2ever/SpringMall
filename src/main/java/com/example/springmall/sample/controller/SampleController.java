@@ -1,13 +1,19 @@
 package com.example.springmall.sample.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springmall.sample.service.SampleService;
 import com.example.springmall.sample.vo.Sample;
+import com.example.springmall.sample.vo.SampleFile;
 import com.example.springmall.sample.vo.SampleRequest;
 
 @Controller
@@ -78,8 +85,19 @@ public class SampleController {
 		sampleService.modifySample(sample);
 		return "redirect:/sample/sampleList";
 	}
-	@RequestMapping(value="/common/downloadFile.do")
-	public void downloadFile(HttpServletResponse response) {
-		
+	@RequestMapping(value="/sample/downloadFile", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(value="sampleFileNo") int sampleFileNo) throws FileNotFoundException {
+	   SampleFile sampleFile = sampleService.getSampleFile(sampleFileNo);
+	   String filePath = sampleFile.getSampleFilePath();
+	   String fileName = sampleFile.getSampleFileName();
+	   String fileExt = sampleFile.getSampleFileExt();
+	   
+		File file = new File(filePath + "\\" + fileName + "." + fileExt);
+	    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+	    return ResponseEntity.ok()
+	    	.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length())      
+            .body(resource);
 	}
+	
 }

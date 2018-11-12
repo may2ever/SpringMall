@@ -167,4 +167,13 @@ public class SampleService {
 	public int modifySample(Sample sample) {
 		return sampleMapper.updateSample(sample);
 	}
+	/**
+	 * 업로드한 샘플파일에 대한 데이터 하나를 가져온다
+	 *
+	 * @param sampleFileNo 업로드된 샘플파일의 등록번호
+	 * @return 해당 등록번호에 대한 샘플파일 데이터
+	 */
+	public SampleFile getSampleFile(int sampleFileNo) {
+		return sampleFileMapper.selectSampleFileOne(sampleFileNo);
+	}
 }

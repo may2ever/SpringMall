@@ -11,7 +11,6 @@
   	<result column="sample_pw" property="samplePw"/>
   	<association property="sampleFile" javaType="com.example.springmall.sample.vo.SampleFile">
   		<id column="samplefile_no" property="sampleFileNo"/>
-  		<result column="sample_no" property="sampleNo"/>
   		<result column="samplefile_path" property="sampleFilePath"/>
   		<result column="samplefile_name" property="sampleFileName"/>
   		<result column="samplefile_ext" property="sampleFileExt"/>
@@ -21,21 +20,23 @@
   	</association>
   </resultMap>
 
-  <select id="selectSampleOne" resultMap="sampleResultMap"  >
+  <select id="selectSampleOne" resultMap="sampleResultMap">
   	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE sample_no = #{sampleNo}
   </select>
-   <select id="selectSearchSample" resultType="com.example.springmall.sample.vo.Sample" >
-   	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample WHERE 
+   <select id="selectSearchSample" resultMap="sampleResultMap" >
+   	 	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_path, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
+	 	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE		   
    	<if test="!(searchType == 'sample_no')">
-   		${searchType} LIKE CONCAT('%',#{searchQuery},'%')
+   			   s.${searchType} LIKE CONCAT('%',#{searchQuery},'%')
    	</if>
   	<if test="searchType == 'sample_no'">
-   		${searchType} = #{searchQuery} 
+   			   s.${searchType} = #{searchQuery} 
    	</if>
-   	ORDER BY sampleNo DESC limit #{currentPage}, #{rowPerPage}
+   	ORDER BY s.sample_no DESC limit #{currentPage}, #{rowPerPage}
   </select> 
-  <select id="selectSampleAll" resultType="com.example.springmall.sample.vo.Sample">
-  	SELECT sample_no as sampleNo, sample_id as sampleId, sample_pw as samplePw From sample ORDER BY sampleNo DESC limit #{currentPage},#{rowPerPage}
+  <select id="selectSampleAll" resultMap="sampleResultMap">
+	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
+	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no ORDER BY s.sample_no DESC limit #{currentPage},#{rowPerPage}
   </select>
     <select id="selectSearchCount" resultType="int">
     <if test="!(searchType == 'sample_no')">

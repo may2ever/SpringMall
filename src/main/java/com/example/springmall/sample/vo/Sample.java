@@ -16,12 +16,16 @@ public class Sample {
 	public Sample() {
 	}
 	
-	public Sample(int sampleNo, String sampleId, String samplePw) {
+
+	
+	public Sample(int sampleNo, String sampleId, String samplePw, SampleFile sampleFile) {
+		super();
 		this.sampleNo = sampleNo;
 		this.sampleId = sampleId;
 		this.samplePw = samplePw;
+		this.sampleFile = sampleFile;
 	}
-	
+
 	public int getSampleNo() {
 		return sampleNo;
 	}
@@ -40,8 +44,11 @@ public class Sample {
 	public void setSamplePw(String samplePw) {
 		this.samplePw = samplePw;
 	}
+
 	@Override
 	public String toString() {
-		return "Sample [sampleNo=" + sampleNo + ", sampleId=" + sampleId + ", samplePw=" + samplePw + "]";
+		return "Sample [sampleNo=" + sampleNo + ", sampleId=" + sampleId + ", samplePw=" + samplePw + ", sampleFile="
+				+ sampleFile + "]";
 	}
+
 }
