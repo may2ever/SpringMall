@@ -48,7 +48,7 @@ public class SampleController {
 	// 2. 삭제
 	@RequestMapping(value="/sample/removeSample", method = RequestMethod.GET)
 	public String removeSample(@RequestParam(value = "sampleNo") int sampleNo, @RequestParam(value="currentPage",defaultValue = "1") int currentPage) {
-		if(sampleService.removeSample(sampleNo) == 1) {
+		if(sampleService.removeSample(sampleNo) == 2) {
 			System.out.println(sampleNo + "번 데이터 삭제 성공");
 		}
 		return "redirect:/sample/sampleList?currentPage=" + currentPage;
@@ -61,7 +61,7 @@ public class SampleController {
 	}
 	// 3-2. 입력 액션
 	@RequestMapping(value = "/sample/addSample", method = RequestMethod.POST)
-	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session,HttpServletRequest req) {
+	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session, HttpServletRequest req) {
 		// 커맨드 객체의 멤버 변수 == input태그 name속성 ->표준 setter존재해야된다
 		String getRealPath =  session.getServletContext().getRealPath("/uploads");
 		System.out.println("sampleRequest.multipartfile : " + sampleRequest.getMultipartFile());

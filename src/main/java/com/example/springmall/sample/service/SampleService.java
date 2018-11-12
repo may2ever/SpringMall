@@ -96,7 +96,16 @@ public class SampleService {
 	 * @param sampleNo 샘플데이터의 번호
 	 */
 	public int removeSample(int sampleNo) {
-		return sampleMapper.deleteSample(sampleNo);
+		Sample sample = sampleMapper.selectSampleOne(sampleNo);
+		String filePath = sample.getSampleFile().getSampleFilePath();
+		String fileName = sample.getSampleFile().getSampleFileName();
+		String fileExt = sample.getSampleFile().getSampleFileExt();
+		File file = new File(filePath + "\\" + fileName + "." + fileExt);
+		int transaction1 = sampleFileMapper.deleteSampleFile(sampleNo);
+		
+		int transaction2 = sampleMapper.deleteSample(sampleNo);
+		file.delete();
+		return transaction1 + transaction2;
 	}
 	/**
 	 * 샘플에 대한 정보를 데이터베이스에 등록

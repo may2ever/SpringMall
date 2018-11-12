@@ -9,6 +9,7 @@
 	</insert>
 	<resultMap type="com.example.springmall.sample.vo.SampleFile" id="sampleFileResultMap">
   		<id column="samplefile_no" property="sampleFileNo"/>
+  		<result column="sample_no" property="sampleNo"/>
   		<result column="samplefile_path" property="sampleFilePath"/>
   		<result column="samplefile_name" property="sampleFileName"/>
   		<result column="samplefile_ext" property="sampleFileExt"/>
@@ -19,4 +20,7 @@
 	<select id="selectSampleFileOne" resultMap="sampleFileResultMap" >
 		SELECT * from samplefile where samplefile_no = #{sampleFileNo}
 	</select>
+	<delete id="deleteSampleFile">
+		DELETE FROM samplefile WHERE sample_no = #{sampleNo}
+	</delete>
 </mapper>
