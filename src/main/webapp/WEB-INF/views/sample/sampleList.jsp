@@ -11,7 +11,7 @@
 <!-- jquery CDN -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <body>
-	<div class="container" align = "center">
+	<div class="container" align = "center" style="width: 50%">
 		<h1>SampleList</h1>
 		<div align="left">
 			<a href="/sample/addSample"><button class = "btn btn-primary" >샘플 추가</button></a>
@@ -24,7 +24,6 @@
 					<th style="text-align: center;">SAMPLE PW</th>
 					<th style="width: 100px; text-align: center;">DELETE</th>
 					<th style="width: 100px;text-align: center;">UPDATE</th>
-					<th style="text-align: center;">download</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -32,15 +31,11 @@
 				<c:forEach var="sample" items="${sampleList}">
 				<c:set var="sampleFile" value="${sample.sampleFile}"></c:set>
 					<tr>
-						<td style="vertical-align: middle;">${sample.sampleNo}</td>
+						<td style="vertical-align: middle;"><a href="/sample/detailSample?sampleNo=${sample.sampleNo}">${sample.sampleNo}</a></td>
 						<td style="vertical-align: middle;">${sample.sampleId}</td>
 						<td style="vertical-align: middle;">${sample.samplePw}</td>
 						<td style="vertical-align: middle;"><a href="/sample/removeSample?sampleNo=${sample.sampleNo}&currentPage=${pagingInfo.currentPage}">DELETE</a></td>
 						<td style="vertical-align: middle;"><a href="/sample/modifySample?sampleNo=${sample.sampleNo}">UPDATE</a></td>
-						<td>
-							<a href="/sample/downloadFile?sampleFileNo=${sampleFile.sampleFileNo}">${sampleFile.sampleFileName}.${sampleFile.sampleFileExt}</a><br>
-							<span>${sampleFile.sampleFileSize} B</span>
-						</td>
 					</tr>	
 				</c:forEach>
 				<tr>

@@ -30,7 +30,8 @@ $(document).ready(()=>{
 		}
 	});
 	$('#addBtn').click(()=>{
-		alert("aa");
+		console.log($("#fileform1").val() == "");
+		
 		let sampleId = $('#sampleId').val();
 		let samplePw = $('#samplePw').val();
 		if(sampleId.length >= 5 && samplePw.length >= 5) {
@@ -50,6 +51,8 @@ $(document).ready(()=>{
 			count--;
 		}
 	});
+
+	
 });
 
 </script>
@@ -76,7 +79,7 @@ $(document).ready(()=>{
 					<td style="text-align: center;width: 130px"><h4>SampleFile</h4></td>
 					<td id = "fileAddtd" style="vertical-align: middle">
 						<div class="form-inline">
-							<input type="file" name ="multipartFile" class="form-control" style="width: 250px">
+							<input type="file" name ="multipartFile" id = "fileform1" class="form-control" style="width: 250px">
 							<div class = "pull-right" >
 								<button type="button" class="btn btn-primary btn-xs" style="width: 25px" id = "addFile">+</button>
 								<button type="button" class="btn btn-danger btn-xs" style="width: 25px" id = "deleteFile">-</button>

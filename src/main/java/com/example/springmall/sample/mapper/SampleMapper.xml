@@ -20,25 +20,22 @@
   		<result column="samplefile_date" property="sampleFileDate"/>
   	</association>
   </resultMap>
-
-   <select id="selectSearchSample" resultMap="sampleResultMap" >
-   	 	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
-	 	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE		   
+  
+	<select id="selectSearchSample" resultMap="sampleResultMap">
+	   SELECT sample_no, sample_id, sample_pw FROM sample WHERE
    	<if test="!(searchType == 'sample_no')">
-   			   s.${searchType} LIKE CONCAT('%',#{searchQuery},'%')
+   			   ${searchType} LIKE CONCAT('%',#{searchQuery},'%')
    	</if>
   	<if test="searchType == 'sample_no'">
-   			   s.${searchType} = #{searchQuery} 
+   			   ${searchType} = #{searchQuery} 
    	</if>
-   	ORDER BY s.sample_no DESC limit #{currentPage}, #{rowPerPage}
+   	ORDER BY sample_no DESC limit #{currentPage}, #{rowPerPage}
   </select> 
   <select id="selectSampleAll" resultMap="sampleResultMap">
-	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
-	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no ORDER BY s.sample_no DESC limit #{currentPage},#{rowPerPage}
+	SELECT sample_no, sample_id, sample_pw FROM sample ORDER BY sample_no DESC limit #{currentPage},#{rowPerPage}
   </select>
   <select id="selectSampleOne" resultMap="sampleResultMap">
-	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
-	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE s.sample_no = #{sampleNo}
+	SELECT sample_no, sample_id, sample_pw FROM sample WHERE sample_no = #{sampleNo}
   </select>
   <select id="selectSampleCount" resultType="int">
   	SELECT count(*) FROM sample
