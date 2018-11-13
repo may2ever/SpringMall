@@ -66,7 +66,6 @@ public class SampleController {
 	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session) {
 		// 커맨드 객체의 멤버 변수 == input태그 name속성 ->표준 setter존재해야된다
 		String getRealPath =  session.getServletContext().getRealPath("/uploads");
-		System.out.println("sampleRequest.multipartfile : " + sampleRequest.getMultipartFile());
 		int row = sampleService.addSample(sampleRequest, getRealPath);
 		if(row == 2) {
 			System.out.println("sample 등록 성공!");

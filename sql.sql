@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `samplefile` (
   `samplefile_no` int(10) NOT NULL AUTO_INCREMENT,
   `sample_no` int(10) NOT NULL,
   `samplefile_path` varchar(100) COLLATE utf8_bin NOT NULL,
+  `samplefile_realname` varchar(50) COLLATE utf8_bin NOT NULL,
   `samplefile_name` varchar(50) COLLATE utf8_bin NOT NULL,
   `samplefile_ext` varchar(50) COLLATE utf8_bin NOT NULL,
   `samplefile_type` varchar(50) COLLATE utf8_bin NOT NULL,

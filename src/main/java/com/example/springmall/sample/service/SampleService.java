@@ -125,39 +125,41 @@ public class SampleService {
 		int transaction1 = sampleMapper.insertSample(sample); // ai -> sampleNo 트랜잭션 1
 		//2
 		SampleFile sampleFile = new SampleFile();
-		MultipartFile multiPartFile = sampleRequest.getMultipartFile();
+		MultipartFile[] multiPartFile = sampleRequest.getMultipartFile();
 		// 1. sampleFileNo : AutoIntrement
 		int transaction2 = 0;
-		if(multiPartFile.getSize() != 0) {
-			// 2. SampleNo
-			sampleFile.setSampleNo(sample.getSampleNo()); //insertSample(sample) 후에 pk값이 sample변수에 채워진다.
-			// 3. sampleFilePath
-			sampleFile.setSampleFilePath(realPath);
-			String originalFileName = multiPartFile.getOriginalFilename();
-			int index = originalFileName.indexOf(".");
-			// 4. 이름
-			String fileName = originalFileName.substring(0,index);
-			sampleFile.setSampleFileName(fileName);
-			// 5. 확장자
-			String ext = originalFileName.substring(fileName.length()+1, originalFileName.length());
-			sampleFile.setSampleFileExt(ext);
-			// 6. 타입
-			sampleFile.setSampleFileType(multiPartFile.getContentType());
-			// 7. 크기
-			sampleFile.setSampleFileSize(multiPartFile.getSize());
-			
-			String realFileName = UUID.randomUUID().toString();
-			sampleFile.setSampleFileRealName(realFileName);
-			
-			//내가 원하는 이름의 빈파일 생성
-			File file = new File(realPath + "/" + realFileName + "." + ext);
-			transaction2 = sampleFileMapper.insertSampleFile(sampleFile); //트랜잭션 2
-			//multipartFile파일을 빈파일로 복사
-			try {
-				multiPartFile.transferTo(file);
-			}
-			catch(IllegalStateException | IOException e) {
-				e.printStackTrace();
+		for(MultipartFile multipart :multiPartFile) {
+			if(multipart.getSize() != 0) {
+				// 2. SampleNo
+				sampleFile.setSampleNo(sample.getSampleNo()); //insertSample(sample) 후에 pk값이 sample변수에 채워진다.
+				// 3. sampleFilePath
+				sampleFile.setSampleFilePath(realPath);
+				String originalFileName = multipart.getOriginalFilename();
+				int index = originalFileName.indexOf(".");
+				// 4. 이름
+				String fileName = originalFileName.substring(0,index);
+				sampleFile.setSampleFileName(fileName);
+				// 5. 확장자
+				String ext = originalFileName.substring(fileName.length()+1, originalFileName.length());
+				sampleFile.setSampleFileExt(ext);
+				// 6. 타입
+				sampleFile.setSampleFileType(multipart.getContentType());
+				// 7. 크기
+				sampleFile.setSampleFileSize(multipart.getSize());
+				
+				String realFileName = UUID.randomUUID().toString();
+				sampleFile.setSampleFileRealName(realFileName);
+				
+				//내가 원하는 이름의 빈파일 생성
+				File file = new File(realPath + "/" + realFileName + "." + ext);
+				transaction2 = sampleFileMapper.insertSampleFile(sampleFile); //트랜잭션 2
+				//multipartFile파일을 빈파일로 복사
+				try {
+					multipart.transferTo(file);
+				}
+				catch(IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		// 1 + 2 -> @Transactional
@@ -182,34 +184,37 @@ public class SampleService {
 		sample.setSampleId(sampleRequest.getSampleId());
 		sample.setSamplePw(sampleRequest.getSamplePw());
 		int transaction1 = sampleMapper.updateSample(sample);
-		MultipartFile multiPartFile = sampleRequest.getMultipartFile();
+		MultipartFile[] multiPartFile = sampleRequest.getMultipartFile();
 		SampleFile sampleFile = sampleFileMapper.selectSampleFileFromSampleNo(sampleRequest.getSampleNo());
 		System.out.println(sampleFile + "<=======");
 		String path = sampleFile.getSampleFilePath();
 		String realname = sampleFile.getSampleFileRealName();
 		String preExt = sampleFile.getSampleFileExt();
 		File preFile = new File(path + "\\" + realname + "." + preExt);
+		int transaction2 = 0;
+		for(MultipartFile multipart : multiPartFile) {
+			String originalFileName = multipart.getOriginalFilename();
+			int index = originalFileName.indexOf(".");
+			// 1. 이름
+			String fileName = originalFileName.substring(0,index);
+			sampleFile.setSampleFileName(fileName);
+			// 2. 확장자
+			String ext = originalFileName.substring(fileName.length()+1, originalFileName.length());
+			sampleFile.setSampleFileExt(ext);
+			// 3. 타입
+			sampleFile.setSampleFileType(multipart.getContentType());
+			// 4. 크기
+			sampleFile.setSampleFileSize(multipart.getSize());
+			transaction2 = sampleFileMapper.updateSampleFile(sampleFile);
+			preFile.delete(); //기존에 있던 파일 삭제
+			try {
+				multipart.transferTo(new File(path + "\\" + realname + "." + ext));
+			}
+			catch(IOException e){
+				e.printStackTrace();
+			}
+		}
 
-		String originalFileName = multiPartFile.getOriginalFilename();
-		int index = originalFileName.indexOf(".");
-		// 1. 이름
-		String fileName = originalFileName.substring(0,index);
-		sampleFile.setSampleFileName(fileName);
-		// 2. 확장자
-		String ext = originalFileName.substring(fileName.length()+1, originalFileName.length());
-		sampleFile.setSampleFileExt(ext);
-		// 3. 타입
-		sampleFile.setSampleFileType(multiPartFile.getContentType());
-		// 4. 크기
-		sampleFile.setSampleFileSize(multiPartFile.getSize());
-		int transaction2 = sampleFileMapper.updateSampleFile(sampleFile);
-		preFile.delete(); //기존에 있던 파일 삭제
-		try {
-			multiPartFile.transferTo(new File(path + "\\" + realname + "." + ext));
-		}
-		catch(IOException e){
-			e.printStackTrace();
-		}
 		return transaction1 + transaction2;
 	}
 	/**

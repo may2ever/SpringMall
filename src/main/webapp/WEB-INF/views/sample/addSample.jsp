@@ -30,13 +30,28 @@ $(document).ready(()=>{
 		}
 	});
 	$('#addBtn').click(()=>{
+		alert("aa");
 		let sampleId = $('#sampleId').val();
 		let samplePw = $('#samplePw').val();
 		if(sampleId.length >= 5 && samplePw.length >= 5) {
 			$('#addForm').submit();
 		}
 	});
+	let count = 1;
+	$('#addFile').click(()=>{
+		if(count < 3){
+			count++;
+			$('#fileAddtd').append("<input type='file' name ='multipartFile' id = fileform" + count +" class='form-control' style='width: 250px'>");
+		}
+	});
+	$('#deleteFile').click(()=>{
+		if(count > 1) {
+			$('#fileform'+count).remove();
+			count--;
+		}
+	});
 });
+
 </script>
 <body>
 	<div class="container" align="center" style="max-width: 40%">
@@ -59,8 +74,14 @@ $(document).ready(()=>{
 				</tr>
 				<tr>
 					<td style="text-align: center;width: 130px"><h4>SampleFile</h4></td>
-					<td>
-						<input type="file" name ="multipartFile" class="form-control">
+					<td id = "fileAddtd" style="vertical-align: middle">
+						<div class="form-inline">
+							<input type="file" name ="multipartFile" class="form-control" style="width: 250px">
+							<div class = "pull-right" >
+								<button type="button" class="btn btn-primary btn-xs" style="width: 25px" id = "addFile">+</button>
+								<button type="button" class="btn btn-danger btn-xs" style="width: 25px" id = "deleteFile">-</button>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr>

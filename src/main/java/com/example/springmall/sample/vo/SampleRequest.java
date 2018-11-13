@@ -6,7 +6,7 @@ public class SampleRequest {
 	private int SampleNo;
 	private String sampleId;
 	private String samplePw;
-	private MultipartFile multipartFile;
+	private MultipartFile[] multipartFile;
 	public int getSampleNo() {
 		return SampleNo;
 	}
@@ -25,10 +25,10 @@ public class SampleRequest {
 	public void setSamplePw(String samplePw) {
 		this.samplePw = samplePw;
 	}
-	public MultipartFile getMultipartFile() {
+	public MultipartFile[] getMultipartFile() {
 		return multipartFile;
 	}
-	public void setMultipartFile(MultipartFile multipartFile) {
+	public void setMultipartFile(MultipartFile[] multipartFile) {
 		this.multipartFile = multipartFile;
 	}
 	
