@@ -7,6 +7,8 @@ import com.example.springmall.sample.vo.SampleFile;
 @Mapper
 public interface SampleFileMapper {
 	int insertSampleFile(SampleFile sampleFile);
-	SampleFile selectSampleFileOne(int sampleFileNo);
+	SampleFile selectSampleFileFromFileNo(int sampleFileNo);
+	SampleFile selectSampleFileFromSampleNo(int SampleNo);
+	int updateSampleFile(SampleFile sampleFile);
 	int deleteSampleFile(int sampleNo);
 }

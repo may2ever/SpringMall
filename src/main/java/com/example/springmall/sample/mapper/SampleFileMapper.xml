@@ -5,22 +5,29 @@
   
 <mapper namespace="com.example.springmall.sample.mapper.SampleFileMapper">
 	<insert id="insertSampleFile" parameterType="com.example.springmall.sample.vo.SampleFile">
-		INSERT INTO samplefile(sample_no, samplefile_path, samplefile_name, samplefile_ext, samplefile_type, samplefile_size, samplefile_date) values(#{sampleNo} ,#{sampleFilePath}, #{sampleFileName},  #{sampleFileExt},  #{sampleFileType},  #{sampleFileSize}, NOW())
+		INSERT INTO samplefile(sample_no, samplefile_path, samplefile_realname, samplefile_name, samplefile_ext, samplefile_type, samplefile_size, samplefile_date) values(#{sampleNo} ,#{sampleFilePath}, #{sampleFileRealName}, #{sampleFileName},  #{sampleFileExt},  #{sampleFileType},  #{sampleFileSize}, NOW())
 	</insert>
 	<resultMap type="com.example.springmall.sample.vo.SampleFile" id="sampleFileResultMap">
   		<id column="samplefile_no" property="sampleFileNo"/>
   		<result column="sample_no" property="sampleNo"/>
   		<result column="samplefile_path" property="sampleFilePath"/>
+  		<result column="samplefile_realname" property="sampleFileRealName"/>
   		<result column="samplefile_name" property="sampleFileName"/>
   		<result column="samplefile_ext" property="sampleFileExt"/>
   		<result column="samplefile_type" property="sampleFileType"/>
   		<result column="samplefile_size" property="sampleFileSize"/>
   		<result column="samplefile_date" property="sampleFileDate"/>
 	</resultMap>
-	<select id="selectSampleFileOne" resultMap="sampleFileResultMap" >
+	<select id="selectSampleFileFromSampleNo" resultMap="sampleFileResultMap" >
+		SELECT * from samplefile where sample_no = #{sample_no}
+	</select>
+		<select id="selectSampleFileFromFileNo" resultMap="sampleFileResultMap" >
 		SELECT * from samplefile where samplefile_no = #{sampleFileNo}
 	</select>
 	<delete id="deleteSampleFile">
 		DELETE FROM samplefile WHERE sample_no = #{sampleNo}
 	</delete>
+	<update id="updateSampleFile" parameterType="com.example.springmall.sample.vo.SampleFile">
+		UPDATE samplefile SET samplefile_name = #{sampleFileName}, samplefile_ext = #{sampleFileExt}, samplefile_type = #{sampleFileType}, samplefile_size = #{sampleFileSize}, samplefile_date = NOW() WHERE sample_no = #{sampleNo}
+	</update>
 </mapper>

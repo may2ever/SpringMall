@@ -39,27 +39,28 @@ $(document).ready(()=>{
 });
 </script>
 <body>
-	<div class="container" align="center" style="max-width: 50%">
+	<div class="container" align="center" style="max-width: 40%">
 		<h1>Add Sample</h1>
 		<form action="/sample/addSample" method="post" id = "addForm" enctype="multipart/form-data">
 			<table class="table " >
 				<tr>
-					<td style="text-align: center;width: 130px"><h4>아이디</h4></td>
+					<td style="text-align: center;width: 130px"><h4>SampleId</h4></td>
 					<td>
 						<input type="text" class = "form-control" name = "sampleId" id = "sampleId">
 						<span id="sampleIdtext"></span>
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: center;width: 130px"><h4>패스워드</h4></td>
+					<td style="text-align: center;width: 130px"><h4>SamplePw</h4></td>
 					<td>
 						<input type="password" class = "form-control" name = "samplePw" id = "samplePw">
 						<span id="samplePwtext"></span>
 					</td>
 				</tr>
 				<tr>
-					<td colspan = "2" align="center">
-						<input type="file" name ="multipartFile">
+					<td style="text-align: center;width: 130px"><h4>SampleFile</h4></td>
+					<td>
+						<input type="file" name ="multipartFile" class="form-control">
 					</td>
 				</tr>
 				<tr>

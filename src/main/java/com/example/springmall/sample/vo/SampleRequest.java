@@ -3,9 +3,16 @@ package com.example.springmall.sample.vo;
 import org.springframework.web.multipart.MultipartFile;
 
 public class SampleRequest {
+	private int SampleNo;
 	private String sampleId;
 	private String samplePw;
 	private MultipartFile multipartFile;
+	public int getSampleNo() {
+		return SampleNo;
+	}
+	public void setSampleNo(int sampleNo) {
+		SampleNo = sampleNo;
+	}
 	public String getSampleId() {
 		return sampleId;
 	}

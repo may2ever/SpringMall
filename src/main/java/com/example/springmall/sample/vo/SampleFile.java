@@ -7,6 +7,7 @@ public class SampleFile {
 	private int sampleNo;
 	//multipartFile
 	private String sampleFilePath;
+	private String sampleFileRealName;
 	private String sampleFileName;
 	private String sampleFileExt;
 	private String sampleFileType;
@@ -29,6 +30,12 @@ public class SampleFile {
 	}
 	public void setSampleFilePath(String sampleFilePath) {
 		this.sampleFilePath = sampleFilePath;
+	}
+	public String getSampleFileRealName() {
+		return sampleFileRealName;
+	}
+	public void setSampleFileRealName(String sampleFileRealName) {
+		this.sampleFileRealName = sampleFileRealName;
 	}
 	public String getSampleFileName() {
 		return sampleFileName;

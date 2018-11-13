@@ -12,6 +12,7 @@
   	<association property="sampleFile" javaType="com.example.springmall.sample.vo.SampleFile">
   		<id column="samplefile_no" property="sampleFileNo"/>
   		<result column="samplefile_path" property="sampleFilePath"/>
+  		<result column="samplefile_realname" property="sampleFileRealName"/>
   		<result column="samplefile_name" property="sampleFileName"/>
   		<result column="samplefile_ext" property="sampleFileExt"/>
   		<result column="samplefile_type" property="sampleFileType"/>
@@ -21,7 +22,7 @@
   </resultMap>
 
    <select id="selectSearchSample" resultMap="sampleResultMap" >
-   	 	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_path, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
+   	 	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
 	 	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE		   
    	<if test="!(searchType == 'sample_no')">
    			   s.${searchType} LIKE CONCAT('%',#{searchQuery},'%')
@@ -32,11 +33,11 @@
    	ORDER BY s.sample_no DESC limit #{currentPage}, #{rowPerPage}
   </select> 
   <select id="selectSampleAll" resultMap="sampleResultMap">
-	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
+	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
 	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no ORDER BY s.sample_no DESC limit #{currentPage},#{rowPerPage}
   </select>
   <select id="selectSampleOne" resultMap="sampleResultMap">
-	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
+	SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
 	From sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE s.sample_no = #{sampleNo}
   </select>
   <select id="selectSampleCount" resultType="int">
@@ -52,7 +53,7 @@
    	</if>
   </select>
   <update id="updateSample" parameterType="com.example.springmall.sample.vo.Sample">
-  	UPDATE sample SET sample_no = #{sampleNo}, sample_id = #{sampleId}, sample_pw = #{samplePw} WHERE sample_no = #{sampleNo}
+  	UPDATE sample SET sample_id = #{sampleId}, sample_pw = #{samplePw} WHERE sample_no = #{sampleNo}
   </update>
   <delete id="deleteSample" parameterType="int">
   	DELETE FROM sample WHERE sample_no = #{sampleNo}

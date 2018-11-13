@@ -3,10 +3,12 @@ package com.example.springmall.sample.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,12 +63,12 @@ public class SampleController {
 	}
 	// 3-2. 입력 액션
 	@RequestMapping(value = "/sample/addSample", method = RequestMethod.POST)
-	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session, HttpServletRequest req) {
+	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session) {
 		// 커맨드 객체의 멤버 변수 == input태그 name속성 ->표준 setter존재해야된다
 		String getRealPath =  session.getServletContext().getRealPath("/uploads");
 		System.out.println("sampleRequest.multipartfile : " + sampleRequest.getMultipartFile());
 		int row = sampleService.addSample(sampleRequest, getRealPath);
-		if(row != 0) {
+		if(row == 2) {
 			System.out.println("sample 등록 성공!");
 		}
 		return "redirect:/sample/sampleList";
@@ -76,26 +78,28 @@ public class SampleController {
 	@RequestMapping(value = "/sample/modifySample", method = RequestMethod.GET)
 	public String modifySample(Model model, @RequestParam(value = "sampleNo") int sampleNo) {
 		Sample sample = sampleService.getSample(sampleNo);
+		
 		model.addAttribute("sample", sample);
 		return "/sample/modifySample";
 	}
 	// 4-2 수정 액션
 	@RequestMapping(value = "/sample/modifySample", method = RequestMethod.POST)
-	public String modifySample(Sample sample) {
-		sampleService.modifySample(sample);
+	public String modifySample(SampleRequest sampleRequest) {
+		sampleService.modifySample(sampleRequest);
 		return "redirect:/sample/sampleList";
 	}
 	@RequestMapping(value="/sample/downloadFile", method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(value="sampleFileNo") int sampleFileNo) throws FileNotFoundException {
-	   SampleFile sampleFile = sampleService.getSampleFile(sampleFileNo);
+	public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(value="sampleFileNo") int sampleFileNo) throws Exception {
+	   SampleFile sampleFile = sampleService.getSampleFileFromSampleNo(sampleFileNo);
 	   String filePath = sampleFile.getSampleFilePath();
 	   String fileName = sampleFile.getSampleFileName();
+	   String realFileName = sampleFile.getSampleFileRealName();
 	   String fileExt = sampleFile.getSampleFileExt();
 	   
-		File file = new File(filePath + "\\" + fileName + "." + fileExt);
+		File file = new File(filePath + "\\" + realFileName + "." + fileExt);
 	    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 	    return ResponseEntity.ok()
-	    	.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
+	    	.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8")  + "." + fileExt)
             .contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length())      
             .body(resource);
 	}
