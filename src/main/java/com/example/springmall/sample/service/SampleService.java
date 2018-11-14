@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.springmall.sample.mapper.SampleFileMapper;
@@ -190,50 +191,33 @@ public class SampleService {
 		sample.setSampleNo(sampleRequest.getSampleNo());
 		sample.setSampleId(sampleRequest.getSampleId());
 		sample.setSamplePw(sampleRequest.getSamplePw());
-		int transaction1 = sampleMapper.updateSample(sample);
-		MultipartFile[] multiPartFile = sampleRequest.getMultipartFile();
-		SampleFile sampleFile = sampleFileMapper.selectSampleFileFromSampleNo(sampleRequest.getSampleNo());
-		String path = sampleFile.getSampleFilePath();
-		String realname = sampleFile.getSampleFileRealName();
-		String preExt = sampleFile.getSampleFileExt();
-		File preFile = new File(path + "\\" + realname + "." + preExt);
-		int transaction2 = 0;
-		for(MultipartFile multipart : multiPartFile) {
-			String originalFileName = multipart.getOriginalFilename();
-			int index = originalFileName.indexOf(".");
-			// 1. 이름
-			String fileName = originalFileName.substring(0,index);
-			sampleFile.setSampleFileName(fileName);
-			// 2. 확장자
-			String ext = originalFileName.substring(fileName.length()+1, originalFileName.length());
-			sampleFile.setSampleFileExt(ext);
-			// 3. 타입
-			sampleFile.setSampleFileType(multipart.getContentType());
-			// 4. 크기
-			sampleFile.setSampleFileSize(multipart.getSize());
-			transaction2 = sampleFileMapper.updateSampleFile(sampleFile);
-			preFile.delete(); //기존에 있던 파일 삭제
-			try {
-				multipart.transferTo(new File(path + "\\" + realname + "." + ext));
-			}
-			catch(IOException e){
-				e.printStackTrace();
-			}
-		}
-		return transaction1 + transaction2;
+		int transaction = sampleMapper.updateSample(sample);
+		return transaction;
 	}
 	/**
 	 * 업로드한 샘플파일에 대한 데이터 하나를 가져온다
 	 *
 	 * @param sampleFileNo 업로드된 샘플파일의 등록번호
-	 * @return 해당 등록번호에 대한 샘플파일 데이터
+	 * @return 해당 파일번호에 대한 파일 데이터
 	 */
 	public SampleFile getSampleFileFromSampleNo(int sampleFileNo) {
 		return sampleFileMapper.selectSampleFileFromFileNo(sampleFileNo);
 	}
+	/**
+	 * 하나의 샘플로 업로드한 파일들을 가져온다
+	 *
+	 * @param sampleNo 샘플번호
+	 * @return 해당 등록번호에 대한 샘플(하나의 샘플에 대해 파일이 여러개)
+	 */
 	public Sample getSelectSampleAndFile(int sampleNo) {
 		return sampleMapper.selectSampleAndFile(sampleNo);
 	}
+	/**
+	 * 지정한 파일하나를 삭제한다
+	 *
+	 * @param sampleFileNo 샘플파일의 등록번호
+	 * @return 
+	 */
 	public void removeFile(int sampleFileNo) {
 		SampleFile sampleFile = sampleFileMapper.selectSampleFileFromFileNo(sampleFileNo);
 		String filePath =sampleFile.getSampleFilePath();
@@ -243,9 +227,16 @@ public class SampleService {
 		sampleFileMapper.deleteSampleFileFromFileNo(sampleFileNo);
 		file.delete();	
 	}
-	public void modifyFile(SampleRequest sampleRequest) {
+	/**
+	 * 지정한 파일하나를 수정한다
+	 *
+	 * @param sampleRequest 재업로드된 샘플파일 요청정보
+	 * @param sampleFileNo  샘플파일의 등록번호
+	 * @return 
+	 */	
+	public void modifyFile(SampleRequest sampleRequest, int sampleFileNo) {
 		MultipartFile[] multiPartFile = sampleRequest.getMultipartFile();
-		SampleFile sampleFile = sampleFileMapper.selectSampleFileFromFileNo(multiPartFile[0].get)
+		SampleFile sampleFile = sampleFileMapper.selectSampleFileFromFileNo(sampleFileNo);
 		String path = sampleFile.getSampleFilePath();
 		String realname = sampleFile.getSampleFileRealName();
 		String preExt = sampleFile.getSampleFileExt();

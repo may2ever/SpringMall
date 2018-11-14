@@ -117,8 +117,8 @@ public class SampleController {
 		return "redirect:/sample/uploadList?sampleNo=" + sampleNo;
 	}
 	@RequestMapping(value="/sample/updateFile", method = RequestMethod.POST)
-	public String updateFile(SampleRequest sampleRequest) {
-		sampleService.modifyFile(sampleRequest);
+	public String updateFile(SampleRequest sampleRequest, @RequestParam(value="sampleFileNo") int sampleFileNo) {
+		sampleService.modifyFile(sampleRequest, sampleFileNo);
 		return "redirect:/sample/uploadList?sampleNo=" + sampleRequest.getSampleNo();
 	}
 	
