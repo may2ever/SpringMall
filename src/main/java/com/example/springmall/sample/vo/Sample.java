@@ -1,24 +1,23 @@
 package com.example.springmall.sample.vo;
 
+import java.util.List;
+
 public class Sample {
 	private int sampleNo;
 	private String sampleId;
 	private String samplePw;
-	private SampleFile sampleFile;
-	public SampleFile getSampleFile() {
+	private List<SampleFile> sampleFile;
+	public List<SampleFile> getSampleFile() {
 		return sampleFile;
 	}
 
-	public void setSampleFile(SampleFile sampleFile) {
+	public void setSampleFile(List<SampleFile> sampleFile) {
 		this.sampleFile = sampleFile;
 	}
 
 	public Sample() {
 	}
-	
-
-	
-	public Sample(int sampleNo, String sampleId, String samplePw, SampleFile sampleFile) {
+	public Sample(int sampleNo, String sampleId, String samplePw, List<SampleFile> sampleFile) {
 		super();
 		this.sampleNo = sampleNo;
 		this.sampleId = sampleId;

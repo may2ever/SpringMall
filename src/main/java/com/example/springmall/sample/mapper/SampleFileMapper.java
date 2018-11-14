@@ -11,4 +11,5 @@ public interface SampleFileMapper {
 	SampleFile selectSampleFileFromSampleNo(int SampleNo);
 	int updateSampleFile(SampleFile sampleFile);
 	int deleteSampleFile(int sampleNo);
+	int deleteSampleFileFromFileNo(int sampleFileNo);
 }

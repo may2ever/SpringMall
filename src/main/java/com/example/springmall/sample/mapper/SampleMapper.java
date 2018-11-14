@@ -25,4 +25,6 @@ public interface SampleMapper {
 	List<Sample> selectSearchSample(int currentPage, int rowPerPage, String searchQuery, String searchType);
 	//6. select search count
 	int selectSearchCount(String searchQuery, String searchType);
+	
+	Sample selectSampleAndFile(int sampleNo);
 }

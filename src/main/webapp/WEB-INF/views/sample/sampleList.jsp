@@ -31,7 +31,7 @@
 				<c:forEach var="sample" items="${sampleList}">
 				<c:set var="sampleFile" value="${sample.sampleFile}"></c:set>
 					<tr>
-						<td style="vertical-align: middle;"><a href="/sample/detailSample?sampleNo=${sample.sampleNo}">${sample.sampleNo}</a></td>
+						<td style="vertical-align: middle;"><a href="/sample/uploadList?sampleNo=${sample.sampleNo}">${sample.sampleNo}</a></td>
 						<td style="vertical-align: middle;">${sample.sampleId}</td>
 						<td style="vertical-align: middle;">${sample.samplePw}</td>
 						<td style="vertical-align: middle;"><a href="/sample/removeSample?sampleNo=${sample.sampleNo}&currentPage=${pagingInfo.currentPage}">DELETE</a></td>

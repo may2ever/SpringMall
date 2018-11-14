@@ -2,10 +2,7 @@ package com.example.springmall.sample.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.example.springmall.sample.service.SampleService;
 import com.example.springmall.sample.vo.Sample;
 import com.example.springmall.sample.vo.SampleFile;
@@ -65,8 +62,8 @@ public class SampleController {
 	@RequestMapping(value = "/sample/addSample", method = RequestMethod.POST)
 	public String addSample(SampleRequest sampleRequest /*커맨드 객체*/, HttpSession session) {
 		// 커맨드 객체의 멤버 변수 == input태그 name속성 ->표준 setter존재해야된다
-		String getRealPath =  session.getServletContext().getRealPath("/uploads");
-		int row = sampleService.addSample(sampleRequest, getRealPath);
+		String realPath =  session.getServletContext().getRealPath("/uploads");
+		int row = sampleService.addSample(sampleRequest, realPath);
 		if(row == 2) {
 			System.out.println("sample 등록 성공!");
 		}
@@ -94,13 +91,35 @@ public class SampleController {
 	   String fileName = sampleFile.getSampleFileName();
 	   String realFileName = sampleFile.getSampleFileRealName();
 	   String fileExt = sampleFile.getSampleFileExt();
-	   
-		File file = new File(filePath + "\\" + realFileName + "." + fileExt);
-	    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-	    return ResponseEntity.ok()
-	    	.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8")  + "." + fileExt)
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length())      
-            .body(resource);
+	   File file = new File(filePath + "\\" + realFileName + "." + fileExt);
+	   InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+	   return ResponseEntity.ok()
+			  .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8")  + "." + fileExt)
+			  .contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length())      
+			  .body(resource);
+	}
+	@RequestMapping(value="/sample/uploadList", method = RequestMethod.GET)
+	public String uploadList(@RequestParam(value="sampleNo")int sampleNo, Model model) {
+		Sample sample = sampleService.getSelectSampleAndFile(sampleNo);
+		if(sample != null) { //업로드한 파일이 있으면
+			List<SampleFile> sampleFileList = sample.getSampleFile();
+			for(SampleFile sampleFile : sampleFileList) {
+				long getSize = sampleFile.getSampleFileSize();
+				sampleFile.setSampleFileSize((long)Math.round(getSize/(double)1024)); //KB 변환
+			}
+			model.addAttribute("sampleFileList",sampleFileList);
+		}
+		return "/sample/uploadList";
+	}
+	@RequestMapping(value="/sample/deleteFile", method = RequestMethod.GET)
+	public String removeFile(@RequestParam(value="sampleFileNo")int sampleFileNo, @RequestParam(value="sampleNo")int sampleNo) {
+		sampleService.removeFile(sampleFileNo);
+		return "redirect:/sample/uploadList?sampleNo=" + sampleNo;
+	}
+	@RequestMapping(value="/sample/updateFile", method = RequestMethod.POST)
+	public String updateFile(SampleRequest sampleRequest) {
+		sampleService.modifyFile(sampleRequest);
+		return "redirect:/sample/uploadList?sampleNo=" + sampleRequest.getSampleNo();
 	}
 	
 }

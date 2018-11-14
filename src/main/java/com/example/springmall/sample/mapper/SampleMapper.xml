@@ -9,8 +9,9 @@
   	<id column="sample_no" property="sampleNo"/>
   	<result column="sample_id" property="sampleId"/>
   	<result column="sample_pw" property="samplePw"/>
-  	<association property="sampleFile" javaType="com.example.springmall.sample.vo.SampleFile">
+  	<collection property="sampleFile" ofType="com.example.springmall.sample.vo.SampleFile">
   		<id column="samplefile_no" property="sampleFileNo"/>
+  		<result column="sample_no" property="sampleNo"/>
   		<result column="samplefile_path" property="sampleFilePath"/>
   		<result column="samplefile_realname" property="sampleFileRealName"/>
   		<result column="samplefile_name" property="sampleFileName"/>
@@ -18,9 +19,12 @@
   		<result column="samplefile_type" property="sampleFileType"/>
   		<result column="samplefile_size" property="sampleFileSize"/>
   		<result column="samplefile_date" property="sampleFileDate"/>
-  	</association>
+  	</collection>
   </resultMap>
-  
+  	<select id="selectSampleAndFile" resultMap="sampleResultMap">
+  		SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
+  		FROM sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE s.sample_no = #{sampleNo}
+  	</select>
 	<select id="selectSearchSample" resultMap="sampleResultMap">
 	   SELECT sample_no, sample_id, sample_pw FROM sample WHERE
    	<if test="!(searchType == 'sample_no')">

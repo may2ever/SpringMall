@@ -27,6 +27,9 @@
 	<delete id="deleteSampleFile">
 		DELETE FROM samplefile WHERE sample_no = #{sampleNo}
 	</delete>
+	<delete id="deleteSampleFileFromFileNo">
+		DELETE FROM samplefile WHERE samplefile_no = #{sampleFileNo}
+	</delete>
 	<update id="updateSampleFile" parameterType="com.example.springmall.sample.vo.SampleFile">
 		UPDATE samplefile SET samplefile_name = #{sampleFileName}, samplefile_ext = #{sampleFileExt}, samplefile_type = #{sampleFileType}, samplefile_size = #{sampleFileSize}, samplefile_date = NOW() WHERE sample_no = #{sampleNo}
 	</update>
