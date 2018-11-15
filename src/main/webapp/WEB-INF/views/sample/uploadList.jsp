@@ -42,7 +42,7 @@ $(document).ready(()=>{
 			<tbody>
 				<c:if test="${sampleFileList == null}">
 					<tr>
-						<td colspan="8" rowspan="8" style="text-align: center; vertical-align: middle">
+						<td colspan="8" rowspan="8" style="text-align: center; vertical-align: middle;height: 300px">
 							<h4>업로드한 파일이 없습니다</h4>
 						</td>
 					</tr>

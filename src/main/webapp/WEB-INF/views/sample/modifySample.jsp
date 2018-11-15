@@ -10,7 +10,9 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <script>
+
 $(document).ready(()=>{
+	
 	$('#sampleId').keyup(()=>{
 		let sampleId = $('#sampleId').val();
 		if(sampleId.length >= 5) {

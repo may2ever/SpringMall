@@ -154,7 +154,7 @@ public class SampleService {
 				sampleFile.setSampleFileType(multipart.getContentType());
 				// 7. 크기
 				sampleFile.setSampleFileSize(multipart.getSize());
-				
+				// 8. 저장될 파일의 이름
 				String realFileName = UUID.randomUUID().toString();
 				sampleFile.setSampleFileRealName(realFileName);
 				
@@ -240,14 +240,14 @@ public class SampleService {
 		String path = sampleFile.getSampleFilePath();
 		String realname = sampleFile.getSampleFileRealName();
 		String preExt = sampleFile.getSampleFileExt();
-		File preFile = new File(path + "\\" + realname + "." + preExt);
+		File preFile = new File(path + "\\" + realname + "." + preExt); //기존에 있던 파일
 		String originalFileName = multiPartFile[0].getOriginalFilename();
 		int index = originalFileName.indexOf(".");
 		// 1. 이름
 		String fileName = originalFileName.substring(0,index);
 		sampleFile.setSampleFileName(fileName);
 		// 2. 확장자
-		String ext = originalFileName.substring(fileName.length()+1, originalFileName.length());
+		String ext = originalFileName.substring(fileName.length() + 1, originalFileName.length());
 		sampleFile.setSampleFileExt(ext);
 		// 3. 타입
 		sampleFile.setSampleFileType(multiPartFile[0].getContentType());

@@ -40,7 +40,7 @@ $(document).ready(()=>{
 	});
 	let count = 1;
 	$('#addFile').click(()=>{
-		if(count < 3){
+		if(count < 5){
 			count++;
 			$('#fileAddtd').append("<input type='file' name ='multipartFile' id = fileform" + count +" class='form-control' style='width: 250px'>");
 		}
