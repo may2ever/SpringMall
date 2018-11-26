@@ -91,7 +91,7 @@ public class SampleController {
 	   String fileName = sampleFile.getSampleFileName();
 	   String realFileName = sampleFile.getSampleFileRealName();
 	   String fileExt = sampleFile.getSampleFileExt();
-	   File file = new File(filePath + "\\" + realFileName + "." + fileExt);
+	   File file = new File(filePath + "/" + realFileName + "." + fileExt);
 	   InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 	   return ResponseEntity.ok()
 			  .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8")  + "." + fileExt)
@@ -111,6 +111,7 @@ public class SampleController {
 		}
 		return "/sample/uploadList";
 	}
+	
 	@RequestMapping(value="/sample/deleteFile", method = RequestMethod.GET)
 	public String removeFile(@RequestParam(value="sampleFileNo")int sampleFileNo, @RequestParam(value="sampleNo")int sampleNo) {
 		sampleService.removeFile(sampleFileNo);

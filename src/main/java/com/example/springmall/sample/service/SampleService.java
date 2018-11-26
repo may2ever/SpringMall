@@ -5,15 +5,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.example.springmall.sample.mapper.SampleFileMapper;
 import com.example.springmall.sample.mapper.SampleMapper;
 import com.example.springmall.sample.vo.Sample;

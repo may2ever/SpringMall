@@ -25,7 +25,7 @@
   		SELECT s.sample_no, s.sample_id,  s.sample_pw, sf.samplefile_no, sf.samplefile_path, sf.samplefile_realname, sf.samplefile_name, sf.samplefile_ext, sf.samplefile_type, sf.samplefile_size, sf.samplefile_date
   		FROM sample s INNER JOIN samplefile sf on s.sample_no = sf.sample_no WHERE s.sample_no = #{sampleNo}
   	</select>
-	<select id="selectSearchSample" resultMap="sampleResultMap">
+	<select id="selectSearchSample" resultMap="sampleResultMap" parameterType="map">
 	   SELECT sample_no, sample_id, sample_pw FROM sample WHERE
    	<if test="!(searchType == 'sample_no')">
    			   ${searchType} LIKE CONCAT('%',#{searchQuery},'%')
@@ -35,8 +35,8 @@
    	</if>
    	ORDER BY sample_no DESC limit #{currentPage}, #{rowPerPage}
   </select> 
-  <select id="selectSampleAll" resultMap="sampleResultMap">
-	SELECT sample_no, sample_id, sample_pw FROM sample ORDER BY sample_no DESC limit #{currentPage},#{rowPerPage}
+  <select id="selectSampleAll" resultMap="sampleResultMap" parameterType="int">
+	SELECT sample_no, sample_id, sample_pw FROM sample ORDER BY sample_no DESC limit ${currentPage},${rowPerPage}
   </select>
   <select id="selectSampleOne" resultMap="sampleResultMap">
 	SELECT sample_no, sample_id, sample_pw FROM sample WHERE sample_no = #{sampleNo}
@@ -53,7 +53,7 @@
    		${searchType} = #{searchQuery} 
    	</if>
   </select>
-  <update id="updateSample" parameterType="com.example.springmall.sample.vo.Sample">
+  <update id="updateSample" parameterType="com.example.springmall.sample.vo.Sample" >
   	UPDATE sample SET sample_id = #{sampleId}, sample_pw = #{samplePw} WHERE sample_no = #{sampleNo}
   </update>
   <delete id="deleteSample" parameterType="int">

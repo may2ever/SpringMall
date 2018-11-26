@@ -1,5 +1,7 @@
 package com.example.springmall;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,8 +9,8 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 	@Autowired
 	private MemberMapper memberMapper;
-	public int GetCountMember() {
-		return memberMapper.selectCountMember();
+	public Map<String,String> GetCountMember() {
+		return memberMapper.selectMember();
 	}
 
 }
