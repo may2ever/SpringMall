@@ -101,7 +101,7 @@ public class SampleService {
 				String filePath =sampleFile.getSampleFilePath();
 				String fileExt = sampleFile.getSampleFileExt();
 				String fileRealName = sampleFile.getSampleFileRealName();
-				File file = new File(filePath + "\\" + fileRealName + "." + fileExt);
+				File file = new File(filePath + "/" + fileRealName + "." + fileExt);
 				transaction1 = sampleFileMapper.deleteSampleFile(sampleNo);
 				file.delete();
 			}
@@ -218,7 +218,7 @@ public class SampleService {
 		String filePath =sampleFile.getSampleFilePath();
 		String fileExt = sampleFile.getSampleFileExt();
 		String fileRealName = sampleFile.getSampleFileRealName();
-		File file = new File(filePath + "\\" + fileRealName + "." + fileExt);
+		File file = new File(filePath + "/" + fileRealName + "." + fileExt);
 		sampleFileMapper.deleteSampleFileFromFileNo(sampleFileNo);
 		file.delete();	
 	}
@@ -235,7 +235,7 @@ public class SampleService {
 		String path = sampleFile.getSampleFilePath();
 		String realname = sampleFile.getSampleFileRealName();
 		String preExt = sampleFile.getSampleFileExt();
-		File preFile = new File(path + "\\" + realname + "." + preExt); //기존에 있던 파일
+		File preFile = new File(path + "/" + realname + "." + preExt); //기존에 있던 파일
 		String originalFileName = multiPartFile[0].getOriginalFilename();
 		int index = originalFileName.indexOf(".");
 		// 1. 이름
@@ -251,7 +251,7 @@ public class SampleService {
 		sampleFileMapper.updateSampleFile(sampleFile);
 		preFile.delete(); //기존에 있던 파일 삭제
 		try {
-			multiPartFile[0].transferTo(new File(path + "\\" + realname + "." + ext));
+			multiPartFile[0].transferTo(new File(path + "/" + realname + "." + ext));
 		}
 		catch(IOException e){
 			e.printStackTrace();
